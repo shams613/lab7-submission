@@ -11,6 +11,18 @@ class Time:
         self.minute = minute
         self.second = second
 
+    def __str__(self):
+        """Return a string representation for the object self, used by print()"""
+        return f'{self.hour:02d}:{self.minute:02d}:{self.second:02d}'
+
+    def __repr__(self):
+        """Return a string representation for the object self in the interactive shell"""
+        return f'{self.hour:02d}.{self.minute:02d}.{self.second:02d}'
+
+    def __add__(self, t2):
+        """Overload the '+' operator for adding two Time objects."""
+        return self.sum_times(t2)
+
     def format_time(self):
         """Return time object as a formatted string"""
         return f'{self.hour:02d}:{self.minute:02d}:{self.second:02d}'
@@ -19,7 +31,7 @@ class Time:
         """Add the current time object with another time object."""
         total_seconds = self.time_to_sec() + other_time.time_to_sec()
         total_seconds %= 86400  # Wrap within a day
-        return sec_to_time(total_seconds)  # Use the module-level function
+        return sec_to_time(total_seconds)
 
     def time_to_sec(self):
         """Convert the time object to seconds since midnight."""
@@ -30,7 +42,7 @@ class Time:
     @staticmethod
     def sec_to_time(seconds):
         """Convert seconds since midnight to a Time object."""
-        return sec_to_time(seconds)  # Use the module-level function
+        return sec_to_time(seconds)
 
     def change_time(self, seconds):
         """Modify the current time object based on seconds passed."""
@@ -38,7 +50,7 @@ class Time:
         total_seconds %= 86400  # Wrap within a day
         if total_seconds < 0:  # Handle negative wrap-around
             total_seconds += 86400
-        new_time = sec_to_time(total_seconds)  # Use the module-level function
+        new_time = sec_to_time(total_seconds)
         self.hour, self.minute, self.second = new_time.hour, new_time.minute, new_time.second
 
     def valid_time(self):
@@ -47,10 +59,6 @@ class Time:
             return False
         return True
 
-    def __str__(self):
-        """Override default string representation of the time object."""
-        return self.format_time()
-
 
 def sec_to_time(seconds):
     """Convert seconds since midnight to a Time object."""
@@ -58,8 +66,3 @@ def sec_to_time(seconds):
     minutes, time.second = divmod(seconds, 60)
     time.hour, time.minute = divmod(minutes, 60)
     return time
-
-
-def time_to_sec(time):
-    """Convert a Time object to seconds since midnight."""
-    return time.time_to_sec()
